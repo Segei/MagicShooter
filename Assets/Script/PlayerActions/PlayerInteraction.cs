@@ -5,9 +5,11 @@ namespace Script.PlayerAction
 {
     public class PlayerInteraction : MonoBehaviour, IInteractor
     {
-        [field: SerializeField] public IInteractionItem InteractionItem { get; set; }
-        public Transform ItemPoint { get; set; }
+        public IInteractionItem InteractionItem { get; set; }
+        [field: SerializeField] public Transform ItemPoint { get; set; }
 
+
+        
 
         public void Interact()
         {

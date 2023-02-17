@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Script.PlayersMovable;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
 
 namespace Script.Input
 {
@@ -13,6 +11,7 @@ namespace Script.Input
         [SerializeField] private List<GameObject> iMovables;
         [SerializeField] private List<GameObject> iRotatings;
         [SerializeField] private List<GameObject> iJimpings;
+        
         private List<IMovable> movables;
         private List<IRotating> rotatings;
         private List<IJumping> jumpings;
