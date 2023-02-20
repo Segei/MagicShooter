@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Script.Interaction
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class InteractionItem : MonoBehaviour, IInteraction, IInteractionItem
     {
         private Transform trackingPoint;
@@ -13,20 +14,23 @@ namespace Script.Interaction
             interactor.InteractionItem = this;
             trackingPoint = interactor.ItemPoint;
         }
-
-        public void Chunk()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void Throw()
         {
-            throw new System.NotImplementedException();
+            
         }
-
+        
+        public void Drop()
+        {
+            
+        }
+        
         private void Update()
         {
-             
+            if (trackingPoint == null)
+            {
+                return;
+            }
+            
         }
     }
 
@@ -37,8 +41,8 @@ namespace Script.Interaction
 
     public interface IInteractionItem
     {
-        void Chunk();
-
         void Throw();
+
+        void Drop();
     }
 }

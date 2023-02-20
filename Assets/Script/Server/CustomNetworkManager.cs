@@ -9,9 +9,12 @@ namespace Script.Server
         public override void OnServerConnect(NetworkConnectionToClient conn)
         {
             Debug.Log("Connect "+conn);
-            NetworkServer.AddPlayerForConnection(conn,  playerSpawner.PlayerSpawn(conn));
+            GameObject player = playerSpawner.PlayerSpawn(conn);
+            NetworkServer.AddPlayerForConnection(conn, player );
             //base.OnServerConnect(conn);
         }
+        
+        
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {

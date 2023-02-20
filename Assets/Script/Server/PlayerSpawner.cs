@@ -20,14 +20,13 @@ namespace Script.Server
         public GameObject PlayerSpawn(NetworkConnectionToClient conn)
         {
             GameObject instance = Instantiate(playerPrefs);
-            UpdateHealth(instance);
             MovePlayer(instance);
             foreach (var respawn in instance.GetComponentsInChildren<IRespawn>())
             {
                 respawn.Respawn.AddListener(Respawn);
             }
-
             playersList.Add(conn, instance);
+            NetworkClient.Ready();
             return instance;
         }
 
@@ -49,7 +48,7 @@ namespace Script.Server
             MovePlayer(instancePlayer);
         }
 
-        private void UpdateHealth(GameObject player)
+        public void UpdateHealth(GameObject player)
         {
             player.GetComponent<IHealth>().UpdateHealth();
         }
