@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Script.Server
 {
-    public class PlayerSpawner : MonoBehaviour
+    public class PlayerSpawner : MonoBehaviour, IRegisterPrefab
     {
-        [SerializeField] private GameObject playerPrefs;
+        [SerializeField] private GameObject playerPrefab;
         [SerializeField] private List<PointToSpawn> spawnPoints;
 
         private readonly Dictionary<NetworkConnectionToClient, GameObject> playersList =
@@ -16,17 +16,29 @@ namespace Script.Server
 
         public int NumberSpawnPointOnTheMap => spawnPoints.Count;
 
-
+        
         public GameObject PlayerSpawn(NetworkConnectionToClient conn)
         {
-            GameObject instance = Instantiate(playerPrefs);
+            if (playerPrefab == null)
+            {
+                Debug.LogError("The PlayerPrefab is empty on the NetworkManager. Please setup a PlayerPrefab object.");
+                return null;
+            }
+
+            if (!playerPrefab.TryGetComponent(out NetworkIdentity _))
+            {
+                Debug.LogError("The PlayerPrefab does not have a NetworkIdentity. Please add a NetworkIdentity to the player prefab.");
+                return null;
+            }
+            
+            GameObject instance = Instantiate(playerPrefab);
             MovePlayer(instance);
             foreach (var respawn in instance.GetComponentsInChildren<IRespawn>())
             {
                 respawn.Respawn.AddListener(Respawn);
             }
             playersList.Add(conn, instance);
-            NetworkClient.Ready();
+            instance.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
             return instance;
         }
 
@@ -82,5 +94,15 @@ namespace Script.Server
 
             return result;
         }
+
+        public void RegisterPrefabToSpawn()
+        {
+            NetworkClient.RegisterPrefab(playerPrefab);
+        }
+    }
+
+    public interface IRegisterPrefab
+    {
+        void RegisterPrefabToSpawn();
     }
 }

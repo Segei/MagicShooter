@@ -14,7 +14,7 @@ namespace Script.PlayersStatistic
         [SerializeField] private float maxHealth;
         public UnityEvent<float> OnChangeHealth;
 
-        
+
         private void Awake()
         {
             if (isLocalPlayer)
@@ -25,6 +25,14 @@ namespace Script.PlayersStatistic
             foreach (var observer in gameObject.GetComponentsInChildren<IHealthObserver>())
             {
                 OnChangeHealth.AddListener(observer.ChangeHealth);
+            }
+        }
+
+        private void Start()
+        {
+            if (isLocalPlayer)
+            {
+                UpdateHealth();
             }
         }
 

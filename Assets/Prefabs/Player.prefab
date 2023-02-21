@@ -660,6 +660,8 @@ MonoBehaviour:
   - {fileID: 4531995458439786203}
   iJimpings:
   - {fileID: 864652372840726613}
+  iInteractor:
+  - {fileID: 5233985400710296737}
 --- !u!1 &4531995458439786203
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +988,7 @@ GameObject:
   - component: {fileID: 1589023119003570643}
   - component: {fileID: 5378458616926086548}
   - component: {fileID: 6428321873695778707}
+  - component: {fileID: 3029381912246043110}
   m_Layer: 0
   m_Name: HeadAlias
   m_TagString: Untagged
@@ -1062,6 +1065,20 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &3029381912246043110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5233985400710296737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 803326ac9cf44653a6ebbb15371daae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 2
+  <ItemPoint>k__BackingField: {fileID: 4331275625317666629}
 --- !u!1 &7280168308701737297
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Script.PlayerAction;
 using Script.PlayersMovable;
+using Script.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,17 +12,20 @@ namespace Script.Input
         [SerializeField] private List<GameObject> iMovables;
         [SerializeField] private List<GameObject> iRotatings;
         [SerializeField] private List<GameObject> iJimpings;
+        [SerializeField] private List<GameObject> iInteractor;
         
         private List<IMovable> movables;
         private List<IRotating> rotatings;
         private List<IJumping> jumpings;
+        private List<IInteractor> interactors;
         private InputActions actions;
 
         private void Start()
         {
-            movables = iMovables.Select(e => e.GetComponent<IMovable>()).ToList();
-            rotatings = iRotatings.Select(e => e.GetComponent<IRotating>()).ToList();
-            jumpings = iJimpings.Select(e => e.GetComponent<IJumping>()).ToList();
+            movables = iMovables.GetInterfaces<IMovable>();
+            rotatings = iRotatings.GetInterfaces<IRotating>();
+            jumpings = iJimpings.GetInterfaces<IJumping>();
+            interactors = iInteractor.GetInterfaces<IInteractor>();
             actions = new InputActions();
             actions.Player.Move.started += Move;
             actions.Player.Move.performed += Move;
@@ -64,7 +68,20 @@ namespace Script.Input
 
         private void Interact(bool value)
         {
-            Debug.Log(value);
+            if (value)
+            {
+                foreach (var interactor in interactors)
+                {
+                    interactor.Interact();
+                }
+            }
+            else
+            {
+                foreach (var interactor in interactors)
+                {
+                    interactor.StopInteract();
+                }
+            }
         }
 
         private void Jump(InputAction.CallbackContext context)
