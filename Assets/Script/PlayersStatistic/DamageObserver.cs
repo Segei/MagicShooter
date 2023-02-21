@@ -1,6 +1,7 @@
 ﻿using System;
 using Mirror;
 using NaughtyAttributes;
+using Script.Interfaces;
 using UnityEngine;
 
 namespace Script.PlayersStatistic
@@ -25,10 +26,5 @@ namespace Script.PlayersStatistic
         {
             TakeDamage(10);
         }
-    }
-
-    public interface ITakeDamage
-    {
-        void TakeDamage(float damage);
     }
 }

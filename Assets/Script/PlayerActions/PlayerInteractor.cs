@@ -1,4 +1,5 @@
 ﻿using Script.Interaction;
+using Script.Interfaces;
 using UnityEngine;
 
 namespace Script.PlayerAction
@@ -36,17 +37,5 @@ namespace Script.PlayerAction
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + (transform.forward * distance));
         }
-    }
-
-    public interface IInteractor : IInteractionItemPoint
-    {
-        IInteractionItem InteractionItem { get; set; }
-        void Interact();
-        void StopInteract();
-    }
-
-    public interface IInteractionItemPoint
-    {
-        Transform ItemPoint { get; set; }
     }
 }

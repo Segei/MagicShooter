@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Script.Interfaces;
 using TMPro;
 using UnityEngine;
 

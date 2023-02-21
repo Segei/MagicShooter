@@ -1,4 +1,5 @@
 using System;
+using Script.Interfaces;
 using Script.PlayersStatistic;
 using UnityEngine;
 using Zenject;
@@ -26,10 +27,5 @@ namespace Script.PlayersMovable
             headBody.angularVelocity = rotateX;
             mainBody.angularVelocity = rotateY;
         }
-    }
-
-    public interface IRotating
-    {
-        void Rotate(Vector2 velocity);
     }
 }

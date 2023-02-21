@@ -1,4 +1,5 @@
 using Mirror;
+using Script.Interfaces;
 using Script.PlayersStatistic;
 using UnityEngine;
 
@@ -32,10 +33,4 @@ namespace Script.PlayersMovable
         }
 
     }
-
-    public interface IMovable
-    {
-        void Move(Vector2 velocity);
-    }
-
 }

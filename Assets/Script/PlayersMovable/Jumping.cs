@@ -1,4 +1,5 @@
 using Mirror;
+using Script.Interfaces;
 using Script.PlayersStatistic;
 using UnityEngine;
 
@@ -18,10 +19,5 @@ namespace Script.PlayersMovable
                 mainBody.AddForce(mainBody.transform.up * power);
             }
         }
-    }
-
-    public interface IJumping
-    {
-        void Jump();
     }
 }

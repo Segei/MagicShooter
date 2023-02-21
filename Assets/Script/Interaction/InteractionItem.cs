@@ -1,4 +1,5 @@
 ﻿using System;
+using Script.Interfaces;
 using Script.PlayerAction;
 using UnityEngine;
 
@@ -32,17 +33,5 @@ namespace Script.Interaction
             }
             
         }
-    }
-
-    public interface IInteraction
-    {
-        void Interact(IInteractor interactor);
-    }
-
-    public interface IInteractionItem
-    {
-        void Throw();
-
-        void Drop();
     }
 }

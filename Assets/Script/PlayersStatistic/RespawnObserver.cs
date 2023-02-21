@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Script.Interfaces;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Script.PlayersStatistic
@@ -15,10 +16,5 @@ namespace Script.PlayersStatistic
                 Respawn?.Invoke(gameObject);
             }
         }
-    }
-
-    public interface IRespawn
-    {
-        UnityEvent<GameObject> Respawn { get; }
     }
 }

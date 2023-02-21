@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Mirror;
+using Script.Interfaces;
 using Script.PlayersStatistic;
 using UnityEngine;
 
@@ -99,10 +100,5 @@ namespace Script.Server
         {
             NetworkClient.RegisterPrefab(playerPrefab);
         }
-    }
-
-    public interface IRegisterPrefab
-    {
-        void RegisterPrefabToSpawn();
     }
 }

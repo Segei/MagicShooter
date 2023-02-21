@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
@@ -199,22 +198,5 @@ namespace Script.Platforms
                 }
             }
         }
-    }
-
-
-    [Serializable]
-    public class Segment
-    {
-        [HideInInspector] public string name;
-        public Waypoint Start;
-        public Waypoint End;
-        public float Time = 1f;
-    }
-
-    [System.Serializable]
-    public struct PathPoint
-    {
-        public Vector3 Position;
-        public Vector3 Rotation;
     }
 }

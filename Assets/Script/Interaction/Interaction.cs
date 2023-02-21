@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using Script.Interfaces;
 using Script.PlayerAction;
 using UnityEngine;
 using UnityEngine.Events;

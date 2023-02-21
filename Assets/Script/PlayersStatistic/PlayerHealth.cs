@@ -1,6 +1,7 @@
 ﻿using System;
 using Mirror;
 using NaughtyAttributes;
+using Script.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -81,17 +82,5 @@ namespace Script.PlayersStatistic
         {
             OnChangeHealth.Invoke(newValue);
         }
-    }
-
-    public interface IHealth
-    {
-        void UpdateHealth();
-        void AddHealth(float health);
-        void TakeDamage(float damage);
-    }
-
-    public interface IHealthObserver
-    {
-        void ChangeHealth(float currentHealth);
     }
 }

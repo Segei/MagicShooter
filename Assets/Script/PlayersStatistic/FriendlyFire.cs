@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Script.Interfaces;
+using UnityEngine;
 
 namespace Script.PlayersStatistic
 {

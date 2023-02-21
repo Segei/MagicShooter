@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Script.Interfaces;
+using UnityEngine;
 
 namespace Script.PlayerAction
 {
@@ -8,10 +9,5 @@ namespace Script.PlayerAction
         {
             throw new System.NotImplementedException();
         }
-    }
-
-    public interface IAction
-    {
-        void ActivateAction();
     }
 }

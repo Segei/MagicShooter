@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Mirror;
+using Script.Interfaces;
 using Script.Tools;
 using UnityEngine;
 
@@ -9,7 +10,9 @@ namespace Script.Server
     {
         [SerializeField] private PlayerSpawner playerSpawner;
         [SerializeField] private List<GameObject> iRegisterPrefab = new List<GameObject>();
-        private List<IRegisterPrefab> registerPrefabs = new List<IRegisterPrefab>();
+        [SerializeField] private List<GameObject> iSpawnObjects = new List<GameObject>();
+        private List<IRegisterPrefab> registerPrefabs;
+        private List<ISpawnObject> spawnObjects;
 
 
 
@@ -17,6 +20,7 @@ namespace Script.Server
         {
             base.Awake();
             registerPrefabs = iRegisterPrefab.GetInterfaces<IRegisterPrefab>();
+            spawnObjects = iSpawnObjects.GetInterfaces<ISpawnObject>();
         }
         public override void OnServerConnect(NetworkConnectionToClient conn)
         {
@@ -37,6 +41,11 @@ namespace Script.Server
         public override void OnStartServer()
         {
             base.OnStartServer();
+            foreach (var spawnObject in spawnObjects)
+            {
+                spawnObject.SpawnObject();
+            }
+            Debug.Log("StartServer");
         }
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
@@ -73,4 +82,5 @@ namespace Script.Server
             }
         }
     }
+    
 }
