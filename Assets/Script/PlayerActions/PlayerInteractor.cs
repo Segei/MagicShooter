@@ -1,4 +1,5 @@
-﻿using Script.Interaction;
+﻿using Mirror;
+using Script.Interaction;
 using Script.Interfaces;
 using UnityEngine;
 

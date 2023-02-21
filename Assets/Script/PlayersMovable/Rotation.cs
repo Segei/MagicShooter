@@ -15,17 +15,9 @@ namespace Script.PlayersMovable
         public void Rotate(Vector2 velocity)
         {
             status.OnRotated = velocity.x != 0;
-            Vector3 rotateX = new Vector3()
-            {
-                x = velocity.y
-            };
-            Vector3 rotateY = new Vector3()
-            {
-                y = velocity.x
-            };
             
-            headBody.angularVelocity = rotateX;
-            mainBody.angularVelocity = rotateY;
+            headBody.angularVelocity = headBody.transform.right * velocity.y * 10;
+            mainBody.angularVelocity = mainBody.transform.up * velocity.x * 10;
         }
     }
 }

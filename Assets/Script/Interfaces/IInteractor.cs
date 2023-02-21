@@ -1,4 +1,6 @@
-﻿namespace Script.Interfaces
+﻿using Mirror;
+
+namespace Script.Interfaces
 {
     public interface IInteractor : IInteractionItemPoint
     {

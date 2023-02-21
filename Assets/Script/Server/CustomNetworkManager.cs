@@ -45,7 +45,14 @@ namespace Script.Server
             {
                 spawnObject.SpawnObject();
             }
-            Debug.Log("StartServer");
+        }
+
+        public override void OnStopServer()
+        {
+            foreach (var spawnObject in spawnObjects)
+            {
+                spawnObject.DestroyObject();
+            }
         }
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)

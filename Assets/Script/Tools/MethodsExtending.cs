@@ -10,5 +10,15 @@ namespace Script.Tools
         {
             return list.Select(e => e.GetComponent<T>()).ToList();
         }
+
+        public static List<T> CopyList<T>(this List<T> list)
+        {
+            List<T> result = new List<T>();
+            foreach (var element in list)
+            {
+                result.Add(element);
+            }
+            return result;
+        }
     }
 }

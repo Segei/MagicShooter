@@ -17,7 +17,7 @@ namespace Script.Platforms
         private bool startPath, endPath;
 
         [Tooltip("The starting path of the direction. False - from start to finish.")] public bool Direction;
-
+        
         public bool StartPath
         {
             get => startPath;
@@ -114,7 +114,7 @@ namespace Script.Platforms
         }
         
         [Server]
-        private void Instance()
+        public void Instance()
         {
             if (Direction)
             {
@@ -158,7 +158,7 @@ namespace Script.Platforms
                 }
             }
 
-            Instance();
+            //Instance();
         }
         
         private static bool CheckSegment(Segment segment)
