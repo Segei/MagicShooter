@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using Script.Server;
+using UnityEngine;
 
 namespace Script.Tools
 {
-    [AddComponentMenu(menuName: "Tools/Game Settings")]
-    public class GameSettings : ScriptableObject
+    [Serializable]
+    public class GameSettings
     {
-        
+        [Range(0.01f, 10)] public float HorizontalSensitivity = 1f;
+        [Range(0.01f, 10)] public float VerticalSensitivity = 1f;
+        public PlayerInstanceFactory PrefabPlayer;
     }
 }

@@ -17,8 +17,8 @@ namespace Script.Platforms
         private bool startPath, endPath;
 
         [Tooltip("The starting path of the direction. False - from start to finish.")] public bool Direction;
-        
-        public bool StartPath
+
+        private bool StartPath
         {
             get => startPath;
             set
@@ -31,7 +31,7 @@ namespace Script.Platforms
             }
         }
 
-        public bool EndPath
+        private bool EndPath
         {
             get => endPath;
             set
@@ -147,6 +147,7 @@ namespace Script.Platforms
         [Server]
         private void Awake()
         {
+            
             foreach (var segment in route)
             {
                 if (CheckSegment(segment))
@@ -157,8 +158,6 @@ namespace Script.Platforms
                     return;
                 }
             }
-
-            //Instance();
         }
         
         private static bool CheckSegment(Segment segment)

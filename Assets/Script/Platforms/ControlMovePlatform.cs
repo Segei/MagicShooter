@@ -37,8 +37,16 @@ namespace Script.Platforms
             });
             
             forwardMove = router.Direction;
-            controlledBody.isKinematic = false;
-            
+            if (isServer)
+            {
+                controlledBody.isKinematic = false;
+            }
+
+            if (isLocalPlayer)
+            {
+                this.enabled = false;
+            }
+
             controlledBody.constraints = move ? RigidbodyConstraints.None : RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
             controlledBody.constraints = rotate ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         }

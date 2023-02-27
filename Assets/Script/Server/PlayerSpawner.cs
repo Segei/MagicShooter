@@ -2,14 +2,16 @@
 using System.Linq;
 using Mirror;
 using Script.Interfaces;
-using Script.PlayersStatistic;
+using Script.Tools;
 using UnityEngine;
+using Zenject;
 
 namespace Script.Server
 {
     public class PlayerSpawner : MonoBehaviour, IRegisterPrefab
     {
-        [SerializeField] private GameObject playerPrefab;
+        [Inject] private GameSettings gameSettings;
+        [Inject] private PlayerInstanceFactory.Factory playerLinks;
         [SerializeField] private List<PointToSpawn> spawnPoints;
 
         private readonly Dictionary<NetworkConnectionToClient, GameObject> playersList =
@@ -18,31 +20,22 @@ namespace Script.Server
         public int NumberSpawnPointOnTheMap => spawnPoints.Count;
 
         
+        [Server]
         public GameObject PlayerSpawn(NetworkConnectionToClient conn)
         {
-            if (playerPrefab == null)
-            {
-                Debug.LogError("The PlayerPrefab is empty on the NetworkManager. Please setup a PlayerPrefab object.");
-                return null;
-            }
-
-            if (!playerPrefab.TryGetComponent(out NetworkIdentity _))
-            {
-                Debug.LogError("The PlayerPrefab does not have a NetworkIdentity. Please add a NetworkIdentity to the player prefab.");
-                return null;
-            }
-            
-            GameObject instance = Instantiate(playerPrefab);
-            MovePlayer(instance);
+            PlayerInstanceFactory instance = playerLinks.Create();
+            MovePlayer(instance.gameObject);
             foreach (var respawn in instance.GetComponentsInChildren<IRespawn>())
             {
                 respawn.Respawn.AddListener(Respawn);
             }
-            playersList.Add(conn, instance);
-            instance.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
-            return instance;
+            playersList.Add(conn, instance.gameObject);
+            instance.name = $"{instance.name} [connId={conn.connectionId}]";
+            return instance.gameObject;
         }
 
+        
+        [Server]
         public void DisconnectPlayer(NetworkConnectionToClient conn)
         {
             GameObject player = playersList[conn];
@@ -55,17 +48,20 @@ namespace Script.Server
             playersList.Remove(conn);
         }
 
+        [Server]
         private void Respawn(GameObject instancePlayer)
         {
             UpdateHealth(instancePlayer);
             MovePlayer(instancePlayer);
         }
-
-        public void UpdateHealth(GameObject player)
+        
+        [Server]
+        private void UpdateHealth(GameObject player)
         {
             player.GetComponent<IHealth>().UpdateHealth();
         }
-
+        
+        [Server]
         private void MovePlayer(GameObject instancePlayer)
         {
             List<PointToSpawn> freePoints = spawnPoints.Where(e => e.Free).ToList();
@@ -79,6 +75,7 @@ namespace Script.Server
             }
         }
 
+        [Server]
         private PointToSpawn GetSpawnWithMaxRangeToOtherPlayer()
         {
             PointToSpawn result = null;
@@ -95,10 +92,11 @@ namespace Script.Server
 
             return result;
         }
-
+        
+        [Server]
         public void RegisterPrefabToSpawn()
         {
-            NetworkClient.RegisterPrefab(playerPrefab);
+            NetworkClient.RegisterPrefab(gameSettings.PrefabPlayer.gameObject);
         }
     }
 }
