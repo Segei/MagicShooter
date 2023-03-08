@@ -1,17 +1,30 @@
-﻿using Mirror;
-using Script.Interfaces;
+﻿using Script.Interfaces;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Script.PlayersStatistic
 {
     public class ViewHealth : MonoBehaviour, IHealthObserver
     {
         [SerializeField] private TMP_Text healthView;
-        
-        public void ChangeHealth(float currentHealth)
+        [SerializeField] private Image image;
+        [SerializeField] private Gradient gradient;
+        public void ChangeHealth(float currentHealth, float maxHealth)
         {
-            healthView.text = currentHealth.ToString();
+            float result = currentHealth / maxHealth;
+            result = Mathf.Clamp01(result);
+
+            if (healthView != null)
+            {
+                healthView.text = currentHealth.ToString();
+            }
+
+            if (image != null)
+            {
+                image.fillAmount = result;
+                image.color = gradient.Evaluate(result);
+            }
         }
     }
 }

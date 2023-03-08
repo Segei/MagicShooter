@@ -15,22 +15,22 @@ namespace Script.PlayersMovable
         private float forwardVelocity, rightVelosity;
 
 
-        [Client]
+        [ServerCallback]
         public void Move(Vector2 velocity)
         {
             status.OnMoved = velocity.magnitude != 0;
-            forwardVelocity = velocity.y > 0 ? velocity.y * forwardSpeed  : velocity.y * backwardSpeed;
+            forwardVelocity = velocity.y > 0 ? velocity.y * forwardSpeed : velocity.y * backwardSpeed;
             rightVelosity = velocity.x * lateralSpeed;
         }
 
-        [Client]
-        private void Update()
+        [ServerCallback]
+        private void FixedUpdate()
         {
-            var body = mainBody.transform;
-            mainBody.velocity = (body.forward * forwardVelocity)
+            Transform body = mainBody.transform;
+            Vector3 velocity = (body.forward * forwardVelocity)
                                 + (body.right * rightVelosity)
                                 + (body.up * mainBody.velocity.y);
+            mainBody.velocity = velocity;
         }
-
     }
 }

@@ -159,12 +159,14 @@ namespace Script.Platforms
                 }
             }
         }
-        
+
+        [ServerCallback]
         private static bool CheckSegment(Segment segment)
         {
             return segment.Start == null || segment.End == null;
         }
-        
+
+        [ServerCallback]
         private void OnValidate()
         {
             foreach (var segment in route)
@@ -172,7 +174,8 @@ namespace Script.Platforms
                 segment.name = nameof(Segment) + " " + route.IndexOf(segment);
             }
         }
-        
+
+        [ServerCallback]
         private void OnDrawGizmos()
         {
             Gizmos.color = colorLineGizmo;

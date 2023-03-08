@@ -1,4 +1,5 @@
-﻿using Script.Interfaces;
+﻿using Mirror;
+using Script.Interfaces;
 using UnityEngine;
 
 namespace Script.PlayersStatistic
@@ -7,11 +8,15 @@ namespace Script.PlayersStatistic
     {
         [SerializeField] private float partDamageMultiplier =0.5f;
         private IHealth health;
+
+        [Server]
         private void Start()
         {
             health = GetComponentInParent<IHealth>();
         }
 
+
+        [Server]
         public void TakeDamage(float damage)
         {
             health.TakeDamage(damage * partDamageMultiplier);

@@ -1,6 +1,4 @@
-﻿using Mirror;
-
-namespace Script.Interfaces
+﻿namespace Script.Interfaces
 {
     public interface IInteraction
     {

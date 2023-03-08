@@ -9,8 +9,8 @@ namespace Script.Interaction
     public class Interaction : MonoBehaviour, IInteraction
     {
         public UnityEvent OnInteractWithThis;
-        
-        [Client]
+
+        [ServerCallback]
         public void Interact(IInteractor interactor)
         {
             OnInteractWithThis?.Invoke();

@@ -1,4 +1,5 @@
-﻿using Script.Interfaces;
+﻿using Mirror;
+using Script.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,9 +9,10 @@ namespace Script.PlayersStatistic
     {
         [field: SerializeField] public UnityEvent<GameObject> Respawn { get; private set; } = new UnityEvent<GameObject>();
 
-
-        public void ChangeHealth(float currentHealth)
+        [Server]
+        public void ChangeHealth(float currentHealth, float maxHealth)
         {
+            Debug.Log("To Respawn " + currentHealth);
             if (currentHealth <= 0)
             {
                 Respawn?.Invoke(gameObject);

@@ -11,7 +11,7 @@ namespace Script.PlayersMovable
         [SerializeField] private PlayerStatus status;
         [SerializeField] private float power;
         
-        [Client]
+        [ServerCallback]
         public void Jump()
         {
             if (status.OnGround)

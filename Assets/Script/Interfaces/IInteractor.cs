@@ -1,4 +1,4 @@
-﻿using Mirror;
+﻿using UnityEngine;
 
 namespace Script.Interfaces
 {

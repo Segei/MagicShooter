@@ -8,7 +8,7 @@ namespace Script.Server
 {
     public class CustomNetworkManager : NetworkManager
     {
-        [SerializeField] private PlayerSpawner playerSpawner;
+        [SerializeField] private ServerPlayerSpawner serverPlayerSpawner;
         [SerializeField] private List<GameObject> iRegisterPrefab = new List<GameObject>();
         [SerializeField] private List<GameObject> iSpawnObjects = new List<GameObject>();
         private List<IRegisterPrefab> registerPrefabs;
@@ -21,6 +21,7 @@ namespace Script.Server
             base.Awake();
             registerPrefabs = iRegisterPrefab.GetInterfaces<IRegisterPrefab>();
             spawnObjects = iSpawnObjects.GetInterfaces<ISpawnObject>();
+            NetworkClient.prefabs.Clear();
         }
         public override void OnServerConnect(NetworkConnectionToClient conn)
         {
@@ -58,7 +59,7 @@ namespace Script.Server
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
             Debug.Log("AddPlayer " + conn);
-            GameObject player = playerSpawner.PlayerSpawn(conn);
+            GameObject player = serverPlayerSpawner.PlayerSpawn(conn);
             Debug.Log("Player Spawn.");
             NetworkServer.AddPlayerForConnection(conn, player);
         }
@@ -66,7 +67,7 @@ namespace Script.Server
         public override void OnServerDisconnect(NetworkConnectionToClient conn)
         {
             Debug.Log("Disconnect " + conn);
-            playerSpawner.DisconnectPlayer(conn);
+            serverPlayerSpawner.DisconnectPlayer(conn);
         }
 
         protected override void OnServerAddPlayerInternal(NetworkConnectionToClient conn, AddPlayerMessage msg)

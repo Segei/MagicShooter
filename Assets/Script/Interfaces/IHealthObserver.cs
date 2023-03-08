@@ -2,6 +2,6 @@
 {
     public interface IHealthObserver
     {
-        void ChangeHealth(float currentHealth);
+        void ChangeHealth(float currentHealth, float maxHealth);
     }
 }

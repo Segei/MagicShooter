@@ -50,7 +50,21 @@ namespace Script.Server
 
         public void RegisterPrefabToSpawn()
         {
-            NetworkClient.RegisterPrefab(prefabObject);
+            NetworkClient.RegisterPrefab(prefabObject, SpawnObject, DestroyObject);
+        }
+
+        public GameObject SpawnObject(SpawnMessage msg)
+        {
+            GameObject instance = Instantiate(prefabObject);
+            instance.transform.position = msg.position;
+            instance.transform.rotation = msg.rotation;
+            instance.name = $"{instance.name} [connId={msg.netId}]";
+            return instance;
+        }
+
+        public void DestroyObject(GameObject spawned)
+        {
+            Destroy(spawned);
         }
     }
 }

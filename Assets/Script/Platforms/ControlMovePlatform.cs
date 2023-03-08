@@ -12,7 +12,7 @@ namespace Script.Platforms
         [SerializeField] private Vector3 direction;
         [SerializeField, SyncVar] private bool forward, backward, forwardMove, block;
 
-        [Server]
+        [ServerCallback]
         public override void OnStartServer()
         {
             router.Instance();
@@ -50,8 +50,8 @@ namespace Script.Platforms
             controlledBody.constraints = move ? RigidbodyConstraints.None : RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
             controlledBody.constraints = rotate ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         }
-        
-        [Server]
+
+        [ServerCallback]
         private void FixedUpdate()
         {
             PathPoint pathPoint = forward ? router.GetNextPoint() :
@@ -63,6 +63,7 @@ namespace Script.Platforms
                 : Vector3.zero;
         }
 
+        [ServerCallback]
         private void OnValidate()
         {
             if (controlledBody == null)
@@ -74,15 +75,13 @@ namespace Script.Platforms
             controlledBody.useGravity = false;
         }
 
-        [Button, ContextMenu("SwitchMove"), ]
+        [Button, ContextMenu("SwitchMove"), ServerCallback]
         public void SwitchMove()
         {
-            Debug.Log("Call switch.");
             if (block)
             {
                 return;
             }
-            Debug.Log("Run switch.");
             forward = forwardMove;
             backward = !forwardMove;
             forwardMove = !forwardMove;

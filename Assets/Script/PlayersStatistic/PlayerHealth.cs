@@ -1,7 +1,6 @@
-﻿using System;
-using Mirror;
-using NaughtyAttributes;
+﻿using Mirror;
 using Script.Interfaces;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +12,7 @@ namespace Script.PlayersStatistic
         public float Health { get; private set; }
 
         [SerializeField] private float maxHealth;
-        public UnityEvent<float> OnChangeHealth;
+        public UnityEvent<float, float> OnChangeHealth;
 
 
         private void Awake()
@@ -23,12 +22,15 @@ namespace Script.PlayersStatistic
                 return;
             }
 
-            foreach (var observer in gameObject.GetComponentsInChildren<IHealthObserver>())
+            Debug.Log("PlayerHealth Awake");
+
+            foreach (IHealthObserver observer in gameObject.GetComponentsInChildren<IHealthObserver>())
             {
                 OnChangeHealth.AddListener(observer.ChangeHealth);
             }
         }
 
+        [Client]
         private void Start()
         {
             if (isLocalPlayer)
@@ -37,18 +39,26 @@ namespace Script.PlayersStatistic
             }
         }
 
-        [Command]
-        private void SetHealth(float value)
+        [Server]
+        public void SetHealth(float value)
         {
             Health = value;
+            OnChangeHealth.Invoke(Health, maxHealth);
         }
 
-        public void UpdateHealth()
+        [Command]
+        private void UpdateHealth()
         {
             SetHealth(maxHealth);
         }
 
-        [Command]
+        [Server]
+        void IHealth.UpdateHealth()
+        {
+            SetHealth(maxHealth);
+        }
+
+        [Server]
         public void AddHealth(float health)
         {
             if (health <= 0)
@@ -61,9 +71,10 @@ namespace Script.PlayersStatistic
             {
                 Health = maxHealth;
             }
+            OnChangeHealth.Invoke(Health, maxHealth);
         }
 
-        [Command]
+        [Server]
         public void TakeDamage(float damage)
         {
             if (damage <= 0)
@@ -76,11 +87,15 @@ namespace Script.PlayersStatistic
             {
                 Health = 0;
             }
+            OnChangeHealth.Invoke(Health, maxHealth);
         }
 
+        [Client]
         private void SyncHealth(float _, float newValue)
         {
-            OnChangeHealth.Invoke(newValue);
+            OnChangeHealth.Invoke(newValue, maxHealth);
         }
+
+        
     }
 }
