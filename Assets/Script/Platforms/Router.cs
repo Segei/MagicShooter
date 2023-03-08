@@ -166,7 +166,6 @@ namespace Script.Platforms
             return segment.Start == null || segment.End == null;
         }
 
-        [ServerCallback]
         private void OnValidate()
         {
             foreach (var segment in route)
@@ -175,7 +174,6 @@ namespace Script.Platforms
             }
         }
 
-        [ServerCallback]
         private void OnDrawGizmos()
         {
             Gizmos.color = colorLineGizmo;

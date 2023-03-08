@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +8,12 @@ namespace Script.PlayersStatistic
     {
         [SerializeField] private PlayerStatus status;
         private List<Collider> colliderInside = new List<Collider>();
+
+        [Server]
         private void Start()
         {
             Collider thisCollider = GetComponent<Collider>();
-            foreach (var collider in status.GetComponentsInChildren<Collider>())
+            foreach (Collider collider in status.GetComponentsInChildren<Collider>())
             {
                 if (collider != thisCollider)
                 {
@@ -20,11 +22,13 @@ namespace Script.PlayersStatistic
             }
         }
 
+        [Server]
         private void OnTriggerEnter(Collider other)
         {
             TriggerEnter(other);
         }
 
+        [Server]
         private void OnTriggerStay(Collider other)
         {
             if (colliderInside.Contains(other))
@@ -35,13 +39,16 @@ namespace Script.PlayersStatistic
             TriggerEnter(other);
         }
 
+        [Server]
         private void OnTriggerExit(Collider other)
         {
             TriggerExit(other);
         }
 
+        [Server]
         private void TriggerEnter(Collider other)
         {
+            Debug.Log(other.name);
             if (colliderInside.Count == 0)
             {
                 status.OnGround = true;
@@ -52,11 +59,12 @@ namespace Script.PlayersStatistic
             }
         }
 
+        [Server]
         private void TriggerExit(Collider other)
         {
             if (colliderInside.Contains(other))
             {
-                colliderInside.Remove(other);
+                _ = colliderInside.Remove(other);
             }
 
             if (colliderInside.Count == 0)

@@ -12,7 +12,6 @@ namespace Script.Platforms
         public Vector3 AuxiliaryPointStart => position + transform.up / 8;
         public Vector3 AuxiliaryPointEnd => position + (-transform.up) / 8;
 
-        [ServerCallback]
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;

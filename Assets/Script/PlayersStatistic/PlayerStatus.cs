@@ -7,6 +7,5 @@ namespace Script.PlayersStatistic
         public bool OnGround;
         public bool OnMoved;
         public bool OnRotated;
-        public float HeightFly;
     }
 }

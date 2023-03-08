@@ -7,15 +7,18 @@ namespace Assets.Script.DamageAbility
 {
     public class DamageDebuff : MonoBehaviour
     {
-        IHealth health;
+        private IHealth health;
+        private Coroutine coroutine;
         [SerializeField] private float damagePerSecond;
         [SerializeField] private int secondDamage;
+
 
         [Server]
         private void Start()
         {
+            Debug.Log("StartDebuff");
             health = gameObject.GetComponentInParent<IHealth>();
-            StartCoroutine(DamageEverySecond());
+            coroutine = StartCoroutine(DamageEverySecond());
         }
 
         [Server]
@@ -26,7 +29,17 @@ namespace Assets.Script.DamageAbility
                 yield return new WaitForSecondsRealtime(1f);
                 health.TakeDamage(damagePerSecond);
             }
+            StopDebuff();
             yield return null;
+        }
+
+        [Server]
+        public void StopDebuff()
+        {
+            Debug.Log("Stop debuff.");
+            StopCoroutine(coroutine);
+            coroutine = null;
+            Destroy(gameObject);
         }
     }
 }

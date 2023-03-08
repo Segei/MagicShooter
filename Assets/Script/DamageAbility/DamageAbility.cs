@@ -1,6 +1,8 @@
 ﻿using Assets.Script.Interfaces;
+using Mirror;
 using Script.Interfaces;
 using Script.PlayersStatistic;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,19 +12,36 @@ namespace Assets.Script.DamageAbility
     public class DamageAbility : MonoBehaviour, IDamageDealer
     {
         [SerializeField] private List<DamageDebuff> damageDebuffs = new List<DamageDebuff>();
-
-        public float Damage { get; set; }
+        [SerializeField] private float waitTimeToDestroy;
+        [field: SerializeField] public float Damage { get; set; }
         public UnityEvent OnDestroyThis;
 
 
+        [Server]
+        private void Start()
+        {
+            if (waitTimeToDestroy != 0)
+            {
+                _ = StartCoroutine(DestroyWaitTime());
+            }
+        }
+
+        [Server]
         private void OnTriggerEnter(Collider other)
         {
             ITakeDamage[] takeDamages = other.GetComponents<ITakeDamage>();
-            if(other.tag == gameObject.tag)
+
+            if(takeDamages.Length == 0)
             {
-                foreach(ITakeDamage damage in takeDamages)
+                DestroyThis();
+                return;
+            }
+
+            if (other.tag == gameObject.tag)
+            {
+                foreach (ITakeDamage damage in takeDamages)
                 {
-                    if(damage is FriendlyFire)
+                    if (damage is FriendlyFire)
                     {
                         damage.TakeDamage(Damage);
                         DestroyThis();
@@ -52,17 +71,25 @@ namespace Assets.Script.DamageAbility
             DestroyThis();
         }
 
-
+        [Server]
         private void DestroyThis()
         {
             OnDestroyThis?.Invoke();
             Destroy(this);
         }
-             
 
+        [Server]
         private void OnCollisionEnter(Collision collision)
         {
             OnTriggerEnter(collision.collider);
+        }
+
+        [Server]
+        private IEnumerator DestroyWaitTime()
+        {
+            yield return new WaitForSecondsRealtime(waitTimeToDestroy);
+            DestroyThis();
+            yield return null;
         }
     }
 }

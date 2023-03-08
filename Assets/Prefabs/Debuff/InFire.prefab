@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4643860565781288247
+--- !u!1 &4146499315714450886
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4643860565781288240}
-  - component: {fileID: 4643860565781288241}
-  - component: {fileID: 4643860565781288246}
-  m_Layer: 8
-  m_Name: PointSpawn
+  - component: {fileID: 4146499315714450936}
+  - component: {fileID: 4146499315714450887}
+  m_Layer: 0
+  m_Name: InFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4643860565781288240
+--- !u!4 &4146499315714450936
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4643860565781288247}
+  m_GameObject: {fileID: 4146499315714450886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,29 +31,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &4643860565781288241
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4643860565781288247}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4643860565781288246
+--- !u!114 &4146499315714450887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4643860565781288247}
+  m_GameObject: {fileID: 4146499315714450886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b83e52dee9f41e59a0bae0a6e4938ab, type: 3}
+  m_Script: {fileID: 11500000, guid: d70ed768442690c4f98e03bbc729310d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Free>k__BackingField: 1
+  damagePerSecond: 5
+  secondDamage: 5

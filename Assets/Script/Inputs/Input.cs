@@ -22,10 +22,14 @@ namespace Script.Inputs
 
         public void Start()
         {
-            if (isLocalPlayer)
+            if (isLocalPlayer && !isServer)
             {
                 rotatings = iRotatings.GetInterfaces<IRotating>();
                 return;
+            }
+            else if(isLocalPlayer && isServer)
+            {
+                rotatings = iRotatings.GetInterfaces<IRotating>();
             }
             movables = iMovables.GetInterfaces<IMovable>();
             jumpings = iJimpings.GetInterfaces<IJumping>();

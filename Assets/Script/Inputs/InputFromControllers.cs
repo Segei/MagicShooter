@@ -40,7 +40,6 @@ namespace Script.Inputs
         [Client]
         private void Move(InputAction.CallbackContext context)
         {
-            Debug.Log("Move");
             input.Move(context.ReadValue<Vector2>());
         }
 

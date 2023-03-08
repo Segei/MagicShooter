@@ -29,6 +29,10 @@ namespace Script.Server
             {
                 respawn.Respawn.AddListener(Respawn);
             }
+            foreach (SkinnedMeshRenderer mesh in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                mesh.gameObject.layer = 6;
+            }
             playersList.Add(conn, instance);
             instance.name = $"{instance.name} [connId={conn.connectionId}]";
             return instance;

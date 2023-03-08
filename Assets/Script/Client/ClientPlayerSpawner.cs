@@ -23,7 +23,7 @@ namespace Script.Client
             PlayerInstanceFactory instance = playerLinks.Create();
             instance.transform.position = msg.position;
             instance.transform.rotation = msg.rotation;
-            foreach (MeshRenderer mesh in instance.GetComponentsInChildren<MeshRenderer>(true))
+            foreach (SkinnedMeshRenderer mesh in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 mesh.gameObject.layer = 6;
             }

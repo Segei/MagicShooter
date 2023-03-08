@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Script.PlayerAnimation
 {
-    public class AnimationInput : MonoBehaviour, IMovable
+    public class AnimationMove : MonoBehaviour, IMovable
     {
         [SerializeField] private Animator animator;
 
