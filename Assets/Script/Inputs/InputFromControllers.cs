@@ -1,4 +1,6 @@
 ﻿using Mirror;
+using NaughtyAttributes;
+using Script.Client.GameSettingsHUDTools;
 using Script.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,10 +13,14 @@ namespace Script.Inputs
         [SerializeField] private Input input;
         [Inject] private readonly GameSettings settings;
         private InputActions inputActions;
+        [ShowNonSerializedField] private GameSettingsHUD settingsHUD;
 
         [Client]
         public void Start()
         {
+            settingsHUD = FindObjectOfType<GameSettingsHUD>(true);
+            settingsHUD.OnCloseHUD.AddListener(CloseMenu);
+
             inputActions = new InputActions();
             inputActions.Player.Move.started += Move;
             inputActions.Player.Move.performed += Move;
@@ -26,8 +32,14 @@ namespace Script.Inputs
             inputActions.Player.Interact.started += (e) => Interact(true);
             inputActions.Player.Interact.canceled += (e) => Interact(false);
             inputActions.Player.Jump.started += Jump;
+            inputActions.Player.Menu.started += Menu;
             inputActions.Enable();
-            Cursor.lockState = CursorLockMode.Locked;
+
+            settings.OnChangeInvertHorizontal.AddListener(e => inputActions.Player.Look.ApplyParameterOverride("InvertVector2:invertX", e));
+            inputActions.Player.Look.ApplyParameterOverride("InvertVector2:invertX", settings.InvertHorizontal);
+            settings.OnChangeInvertVertical.AddListener(e => inputActions.Player.Look.ApplyParameterOverride("InvertVector2:invertY", e));
+            inputActions.Player.Look.ApplyParameterOverride("InvertVector2:invertY", settings.InvertVertical);
+
         }
 
         [Client]
@@ -69,6 +81,20 @@ namespace Script.Inputs
         private void Jump(InputAction.CallbackContext context)
         {
             input.Jump();
+        }
+
+        [Client]
+        private void Menu(InputAction.CallbackContext context)
+        {
+            settingsHUD.ShowSettings();
+            inputActions.Disable();
+        }
+
+        [Client]
+        private void CloseMenu()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            inputActions.Enable();
         }
     }
 }

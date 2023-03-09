@@ -29,6 +29,7 @@ namespace Assets.Script.DamageAbility
         [Server]
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log(other.name, other.gameObject);
             ITakeDamage[] takeDamages = other.GetComponents<ITakeDamage>();
 
             if(takeDamages.Length == 0)

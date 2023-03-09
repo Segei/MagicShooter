@@ -11,7 +11,6 @@ namespace Script.Client
         [Inject] private readonly GameSettings settings;
         [Inject] private readonly PlayerInstanceFactory.Factory playerLinks;
 
-
         private void Start()
         {
             Debug.Log(settings);
@@ -23,9 +22,13 @@ namespace Script.Client
             PlayerInstanceFactory instance = playerLinks.Create();
             instance.transform.position = msg.position;
             instance.transform.rotation = msg.rotation;
-            foreach (SkinnedMeshRenderer mesh in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+
+            if (msg.isLocalPlayer)
             {
-                mesh.gameObject.layer = 6;
+                foreach (SkinnedMeshRenderer mesh in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                {
+                    mesh.gameObject.layer = 6;
+                }
             }
 
             instance.name = $"{instance.name} [connId={msg.netId}]";
