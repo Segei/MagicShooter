@@ -1,10 +1,6 @@
-﻿using Assets.Script.DamageAbility;
-using Assets.Script.Interfaces;
+﻿using Assets.Script.Interfaces;
 using Mirror;
-using Script.Interfaces;
-using Script.PlayersStatistic;
 using Script.Tools;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Script.PlayerActions
@@ -15,28 +11,26 @@ namespace Assets.Script.PlayerActions
         [SerializeField] private GameObject prefabAttackAbility;
         [SerializeField] private float force;
         [SerializeField] private EventForAnimations animations;
+        [SerializeField] private float secondDelay = 3f;
+        private float waitTime = 0;
 
-
-        [ServerCallback]
-        private void Start()
-        {
-            animations.EndAnimation.AddListener(SpawnFireBall); 
-        }
+        
 
         [ServerCallback]
         public void Attack()
         {
-            if (animations.Animation)
+            if (waitTime > 0)
             {
                 return;
             }
 
+            waitTime = secondDelay;
             if (prefabAttackAbility == null || spawnPoint == null)
             {
                 Debug.LogError("This player not ready Attack.", gameObject);
             }
-
             animations.Play();
+            SpawnFireBall();
         }
 
         [ServerCallback]
@@ -47,6 +41,18 @@ namespace Assets.Script.PlayerActions
             instanceAttackObject.transform.rotation = spawnPoint.rotation;
             NetworkServer.Spawn(instanceAttackObject);
             instanceAttackObject.GetComponent<Rigidbody>().AddForce(instanceAttackObject.transform.forward * force);
+        }
+
+
+        [SerializeField]
+        private void Update()
+        {
+            if (waitTime <= 0)
+            {
+                return;
+            }
+
+            waitTime -= Time.unscaledDeltaTime;
         }
     }
 }

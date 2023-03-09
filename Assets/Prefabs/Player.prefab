@@ -537,6 +537,7 @@ MonoBehaviour:
   prefabAttackAbility: {fileID: 5666907037734443563, guid: e200cc9242517fc46b2aa9efa51747dc, type: 3}
   force: 2000
   animations: {fileID: 841240917488127022}
+  secondDelay: 1.5
 --- !u!1 &812987474475779934
 GameObject:
   m_ObjectHideFlags: 0

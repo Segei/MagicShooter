@@ -37,6 +37,7 @@ namespace Script.Tools
         private void Start()
         {
             animator = GetComponent<Animator>();
+            Debug.Log("Event Animation Start");
             if (!CheckAnimation())
             {
                 Debug.LogError("Animation cannot be started", gameObject);
@@ -62,7 +63,8 @@ namespace Script.Tools
 
                 anim.AddEvent(animationStartEvent);
                 anim.AddEvent(animationEndEvent);
-                break;
+                Debug.Log("Event Animation Add Event");
+                return;
             }
         }
 
@@ -87,12 +89,14 @@ namespace Script.Tools
         [Server]
         public void RunAnimationVoid()
         {
+            
             RunAnimation.Invoke();
         }
 
         [Server]
         public void EndAnimationVoid()
         {
+            Debug.Log("EndAnimationVoid");
             Animation = false;
             animator.SetBool(nameAcnimationclip, Animation);
             EndAnimation.Invoke();
@@ -101,6 +105,7 @@ namespace Script.Tools
         [Server]
         public void Play()
         {
+            Debug.Log("Event Animation Play");
             Animation = true;
             animator.SetBool(nameAcnimationclip, Animation);
             animator.Play(nameAcnimationclip);
