@@ -24,7 +24,7 @@ namespace Script.PlayersStatistic
 
             Debug.Log("PlayerHealth Awake");
 
-            foreach (IHealthObserver observer in gameObject.GetComponentsInChildren<IHealthObserver>())
+            foreach (IHealthObserver observer in gameObject.GetComponentsInChildren<IHealthObserver>(true))
             {
                 OnChangeHealth.AddListener(observer.ChangeHealth);
             }

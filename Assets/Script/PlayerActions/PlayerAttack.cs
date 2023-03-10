@@ -10,7 +10,6 @@ namespace Assets.Script.PlayerActions
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private GameObject prefabAttackAbility;
         [SerializeField] private float force;
-        [SerializeField] private EventForAnimations animations;
         [SerializeField] private float secondDelay = 3f;
         private float waitTime = 0;
 
@@ -29,7 +28,6 @@ namespace Assets.Script.PlayerActions
             {
                 Debug.LogError("This player not ready Attack.", gameObject);
             }
-            animations.Play();
             SpawnFireBall();
         }
 

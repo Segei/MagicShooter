@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Mirror;
+﻿using Mirror;
 using Script.Interfaces;
 using Script.Tools;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -10,8 +10,8 @@ namespace Script.Server
 {
     public class ServerPlayerSpawner : MonoBehaviour, IRegisterPrefab
     {
-        [Inject] private GameSettings gameSettings;
-        [Inject] private PlayerInstanceFactory.Factory playerLinks;
+        [Inject] private readonly GameSettings gameSettings;
+        [Inject] private readonly PlayerInstanceFactory.Factory playerLinks;
         [SerializeField] private List<PointToSpawn> spawnPoints;
 
         private readonly Dictionary<NetworkConnectionToClient, GameObject> playersList =
@@ -19,54 +19,59 @@ namespace Script.Server
 
         public int NumberSpawnPointOnTheMap => spawnPoints.Count;
 
-        
+
         [Server]
         public GameObject PlayerSpawn(NetworkConnectionToClient conn)
         {
             GameObject instance = playerLinks.Create().gameObject;
             MovePlayer(instance);
-            foreach (var respawn in instance.GetComponentsInChildren<IRespawn>())
+            foreach (IRespawn respawn in instance.GetComponentsInChildren<IRespawn>())
             {
                 respawn.Respawn.AddListener(Respawn);
             }
-            foreach (SkinnedMeshRenderer mesh in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+
+            if (conn.connectionId == 0) 
             {
-                mesh.gameObject.layer = 6;
+                foreach (SkinnedMeshRenderer mesh in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                {
+                    mesh.gameObject.layer = 6;
+                }
             }
+
             playersList.Add(conn, instance);
             instance.name = $"{instance.name} [connId={conn.connectionId}]";
             return instance;
         }
-        
-        
+
+
         [Server]
         public void DisconnectPlayer(NetworkConnectionToClient conn)
         {
             GameObject player = playersList[conn];
-            foreach (var respawn in player.GetComponentsInChildren<IRespawn>())
+            foreach (IRespawn respawn in player.GetComponentsInChildren<IRespawn>())
             {
                 respawn.Respawn.RemoveListener(Respawn);
             }
 
             Destroy(player);
-            playersList.Remove(conn);
+            _ = playersList.Remove(conn);
         }
-        
-        
-        
+
+
+
         [Server]
         private void Respawn(GameObject instancePlayer)
         {
             UpdateHealth(instancePlayer);
             MovePlayer(instancePlayer);
         }
-        
+
         [Server]
         private void UpdateHealth(GameObject player)
         {
             player.GetComponent<IHealth>().UpdateHealth();
         }
-        
+
         [Server]
         private void MovePlayer(GameObject instancePlayer)
         {
@@ -86,7 +91,7 @@ namespace Script.Server
         {
             PointToSpawn result = null;
             float maxRange = 0;
-            foreach (var spawnPoint in spawnPoints)
+            foreach (PointToSpawn spawnPoint in spawnPoints)
             {
                 float distance = spawnPoint.GetMinimalDistance();
                 if (distance > maxRange)
@@ -98,7 +103,7 @@ namespace Script.Server
 
             return result;
         }
-        
+
         [Server]
         public void RegisterPrefabToSpawn()
         {

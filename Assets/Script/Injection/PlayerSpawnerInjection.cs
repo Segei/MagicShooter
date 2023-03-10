@@ -7,11 +7,11 @@ namespace Script.Injection
     public class PlayerSpawnerInjection : MonoInstaller<PlayerSpawnerInjection>
     {
         [Inject] private GameSettings gameSettings;
-        
-        
+
+
         public override void InstallBindings()
         {
-            Container.BindFactory<PlayerInstanceFactory, PlayerInstanceFactory.Factory>()
+            _ = Container.BindFactory<PlayerInstanceFactory, PlayerInstanceFactory.Factory>()
                 .FromComponentInNewPrefab(gameSettings.PrefabPlayer);
         }
     }

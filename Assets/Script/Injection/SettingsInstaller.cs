@@ -1,4 +1,5 @@
 using Mirror;
+using Newtonsoft.Json;
 using Script.Tools;
 using UnityEngine;
 using Zenject;
@@ -25,6 +26,24 @@ public class SettingsInstaller : ScriptableObjectInstaller<SettingsInstaller>
 
     public override void InstallBindings()
     {
+        string result = PlayerPrefs.GetString(nameof(GameSettings));
+        if (string.IsNullOrEmpty(result))
+        {
+            Save();
+        }
+        else
+        {
+           settings.Load(JsonConvert.DeserializeObject<GameSettings>(result));
+        }
+        settings.OnChangeGameSettings.AddListener(Save);
         Container.Bind<GameSettings>().FromInstance(settings).AsSingle().NonLazy();
+    }
+
+    private void Save()
+    {
+        string name = nameof(GameSettings);
+        string data = JsonConvert.SerializeObject(settings);
+        Debug.Log(data);
+        PlayerPrefs.SetString(name, data);
     }
 }
